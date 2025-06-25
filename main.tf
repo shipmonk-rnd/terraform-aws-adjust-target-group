@@ -1,14 +1,3 @@
-locals {
-  common_tags = {
-    owner      = "pd-dataengineering@shipmonk.com"
-    app        = "data-platform"
-    env        = "prod"
-    permanency = "fixed"
-    role       = "db"
-    team       = "data-platform"
-  }
-}
-
 resource "aws_security_group" "lambda_sg" {
   name        = "${var.name}-sg"
   description = "Security group for Lambda to access Aurora RDS"
@@ -21,7 +10,7 @@ resource "aws_security_group" "lambda_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.common_tags
+  tags = var.tags
 }
 
 resource "aws_iam_role" "lambda_execution_role" {
@@ -29,7 +18,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 
-  tags = local.common_tags
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
@@ -114,21 +103,21 @@ resource "aws_lambda_function" "aurora_nlb" {
 
   environment {
     variables = {
-      AURORA_CLUSTER_ID = var.aurora_cluster_id
-      TARGET_GROUP_ARN  = var.target_group_arn
-      TARGET_PORT       = var.target_port
-      TYPE              = var.type
+      DB_IDENTIFIER    = var.identifier
+      TARGET_GROUP_ARN = var.target_group_arn
+      TARGET_PORT      = var.target_port
+      TYPE             = var.type
     }
   }
 
-  tags = local.common_tags
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_event_rule" "every_minute" {
   name                = "${var.name}-minute"
   schedule_expression = "rate(1 minute)"
 
-  tags = local.common_tags
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_event_target" "lambda_target" {
