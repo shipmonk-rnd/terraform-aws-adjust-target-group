@@ -28,7 +28,13 @@ variable "type" {
   description = "Type of the target group, either 'reader' or 'writer'"
 }
 
-variable "aurora_cluster_id" {
+variable "identifier" {
   type        = string
-  description = "ID of the Aurora cluster to fetch IP addresses from"
+  description = "ID of the Aurora cluster to fetch IP addresses from, or instance identifier for IDS instance"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags to apply to all resources created by this module"
+  default     = {}
 }

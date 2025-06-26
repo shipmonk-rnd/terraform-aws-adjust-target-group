@@ -62,7 +62,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aurora_cluster_id"></a> [aurora\_cluster\_id](#input\_aurora\_cluster\_id) | ID of the Aurora cluster to fetch IP addresses from | `string` | n/a | yes |
+| <a name="input_identifier"></a> [identifier](#input\_identifier) | ID of the Aurora cluster to fetch IP addresses from, or instance identifier for IDS instance | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Prefixing name for the Lambda function and associated resources | `string` | n/a | yes |
 | <a name="input_target_group_arn"></a> [target\_group\_arn](#input\_target\_group\_arn) | ARN of the target group to update with Aurora endpoints IP addresses | `string` | n/a | yes |
 | <a name="input_target_port"></a> [target\_port](#input\_target\_port) | Port on which the target group is listening | `string` | n/a | yes |
