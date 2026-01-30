@@ -104,7 +104,7 @@ def handle_single_instance(rds, instance_identifier, target_type):
     """Handle single RDS instance"""
     instance_info = rds.describe_db_instances(DBInstanceIdentifier=instance_identifier)['DBInstances'][0]
 
-    if instance_info['DBInstanceStatus'] != 'available':
+    if instance_info['DBInstanceStatus'] not in ['available', 'backing-up', 'modifying']:
         print(f"Instance {instance_identifier} is not available (status: {instance_info['DBInstanceStatus']})")
         return []
 
