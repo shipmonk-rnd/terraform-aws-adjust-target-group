@@ -15,7 +15,8 @@ variable "name" {
 
 variable "target_group_arn" {
   type        = string
-  description = "ARN of the target group to update with Aurora endpoints IP addresses"
+  description = "ARN of the target group to update with Aurora endpoints IP addresses. Leave empty for discovery mode."
+  default     = ""
 }
 
 variable "target_port" {
@@ -30,7 +31,14 @@ variable "type" {
 
 variable "identifier" {
   type        = string
-  description = "ID of the Aurora cluster to fetch IP addresses from, or instance identifier for IDS instance"
+  description = "ID of the Aurora cluster to fetch IP addresses from, or instance identifier for single RDS instance. Leave empty for discovery mode."
+  default     = ""
+}
+
+variable "lambda_timeout" {
+  type        = number
+  description = "Timeout in seconds for the Lambda function. Discovery mode needs more time due to multiple API calls."
+  default     = 60
 }
 
 variable "tags" {
