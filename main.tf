@@ -90,6 +90,7 @@ resource "aws_lambda_function" "aurora_nlb" {
   function_name = "${var.name}-updater"
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  timeout       = var.lambda_timeout
 
   role     = aws_iam_role.lambda_execution_role.arn
   filename = data.archive_file.lambda_zip.output_path
@@ -107,6 +108,13 @@ resource "aws_lambda_function" "aurora_nlb" {
       TARGET_GROUP_ARN = var.target_group_arn
       TARGET_PORT      = var.target_port
       TYPE             = var.type
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = (var.identifier != "") == (var.target_group_arn != "")
+      error_message = "Both identifier and target_group_arn must be set together, or both left empty for discovery mode."
     }
   }
 
